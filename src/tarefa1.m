@@ -6,15 +6,15 @@ clc;
 
 
 % Carrega o dataset
-a = csvread ('/home/eduardo/Documents/repo/matlab/EDO/datasets/covid1.csv')
+%a = csvread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv')
 
 % Lê a segunda coluna (óbitos) e cria um vetor y
 
-%y = dlmread ('/home/eduardo/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
+%y = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
 
-%Lê a terceiraa coluna (recuperados) e cria um vetor y
+%Lê a terceira coluna (recuperados) e cria um vetor y
 
-y = dlmread ('/home/eduardo/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
+y = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
 
 %Cria um vetor v da mesma dimensão de y
 v = [];
