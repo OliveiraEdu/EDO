@@ -5,13 +5,6 @@ clear all;
 clc;
 
 
-% Carrega o dataset
-%a = csvread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv')
-
-% Lê a segunda coluna (óbitos) e cria um vetor y
-
-%y = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
-
 %Lê a terceira coluna (recuperados) e cria um vetor y
 
 y = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
@@ -25,6 +18,7 @@ for  n = 1:length(y)
 
 end
 
+%Plota os dados
 scatter(v,y)
 
 %Fixed point format with 16 significant figures.
@@ -40,7 +34,7 @@ hold on
 
 plot(v,yCalc1)
 xlabel('Dia Transcorridos')
-%ylabel('Óbitos')
+
 ylabel('Recuperados')
 title('Relação de regressão linear entre as variáveis')
 
