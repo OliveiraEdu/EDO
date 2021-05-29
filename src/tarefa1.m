@@ -5,18 +5,18 @@ clear all;
 clc;
 
 
-% Lê o arquivo
-a = csvread ('/home/eduardo/Documents/datasets/covid1.csv')
+% Carrega o dataset
+a = csvread ('/home/eduardo/Documents/repo/matlab/EDO/datasets/covid1.csv')
 
 % Lê a segunda coluna (óbitos) e cria um vetor y
 
-%y = dlmread ('/home/eduardo/Documents/datasets/covid1.csv', ',', [0,2,inf,2]);
+%y = dlmread ('/home/eduardo/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
 
-%Lê a segunda coluna (recuperados) e cria um vetor y
+%Lê a terceiraa coluna (recuperados) e cria um vetor y
 
-y = dlmread ('/home/eduardo/Documents/datasets/covid1.csv', ',', [0,3,inf,3]);
+y = dlmread ('/home/eduardo/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
 
-%Cria um vetor v de comprimento igual a y
+%Cria um vetor v da mesma dimensão de y
 v = [];
 
 for  n = 1:length(y)
@@ -31,18 +31,19 @@ scatter(v,y)
 format long
 
 
-%b1 is the slope or regression coefficient.
+%b1 is the slope or regression coefficient.  x = A\B solves the system of linear equations A*x = B.
 b1 = v\y
 
 yCalc1 = b1*v;
 
-
 hold on
+
 plot(v,yCalc1)
 xlabel('Dia Transcorridos')
 %ylabel('Óbitos')
 ylabel('Recuperados')
 title('Relação de regressão linear entre as variáveis')
+
 grid on
 
 %Improve the fit by including a y-intercept β0 in your model as y=β0+β1x. Calculate β0 by padding x with a column of ones and using the \ operator.
