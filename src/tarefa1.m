@@ -18,8 +18,17 @@ for  n = 1:length(y)
 
 end
 
+
 %Plota os dados
 scatter(v,y)
+
+xlabel('Dia Transcorridos')
+
+ylabel('Recuperados')
+title('Relação de regressão linear entre as variáveis')
+
+grid on
+
 
 %Fixed point format with 16 significant figures.
 format long
@@ -30,15 +39,10 @@ b1 = v\y
 
 yCalc1 = b1*v;
 
+
 hold on
 
 plot(v,yCalc1)
-xlabel('Dia Transcorridos')
-
-ylabel('Recuperados')
-title('Relação de regressão linear entre as variáveis')
-
-grid on
 
 %Improve the fit by including a y-intercept β0 in your model as y=β0+β1x. Calculate β0 by padding x with a column of ones and using the \ operator.
 X = [ones(length(v),1) v];
