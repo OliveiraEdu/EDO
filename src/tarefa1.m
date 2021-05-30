@@ -25,7 +25,10 @@ scatter(v,y)
 xlabel('Dia Transcorridos')
 
 ylabel('Recuperados')
-title('Relação de regressão linear entre as variáveis')
+
+
+
+title('COVID-19 - Indíviduos recuperados')
 
 grid on
 
@@ -53,6 +56,8 @@ b2 = X\y
 yCalc2 = X*b2;
 
 plot(v,yCalc2,'--')
+
+title('Relação de regressão linear entre as variáveis')
 
 %Find the better fit of the two fits by comparing values of R2. As the R2 values show, the second fit that includes a y-intercept is better.
 
