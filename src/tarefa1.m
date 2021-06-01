@@ -29,12 +29,12 @@ figure
 scatter(X1,Y1)
 hold on
 
-scatter(X2,Y2)
+plot(X2,Y2,'.')
 
 %https://www.mathworks.com/help/matlab/ref/polyfit.html
 
 %Specify two outputs to return the coefficients for the 3rd degree polinomial fit as well as the error estimation structure
-[p,S] = polyfit(X1,Y1,7);
+[p,S] = polyfit(X1,Y1,3);
 
 %Evaluate the third-degree polynomial fit in p at the points in X. Specify the error estimation structure as the third input so that polyval calculates an estimate of the standard error. The standard error estimate is returned in delta.
 
@@ -42,12 +42,14 @@ scatter(X2,Y2)
 
 %Plot the original data, linear fit, and 95% prediction interval y±2Δ.
 
-plot(X1,Y1,'bo')
-hold on
+%plot(X1,Y1,'bo')
 grid on
 plot(X1,y_fit,'r-')
 plot(X1,y_fit+2*delta,'m--',X1,y_fit-2*delta,'m--')
-legend('Dados','Regressão Polinomial','Intervalo de precisão 95%')
+%legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Intervalo de precisão 95%')
+
+legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Regressão Polinômio grau 3','Intervalo de 95% de previsão','Location','northwest','NumColumns',1);
+
 xlabel('Dia Transcorridos')
 ylabel('Recuperados')
 title('Regressão polinomial entre as variáveis')
