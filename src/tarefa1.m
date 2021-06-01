@@ -46,9 +46,8 @@ plot(X2,Y2,'.')
 grid on
 plot(X1,y_fit,'r-')
 plot(X1,y_fit+2*delta,'m--',X1,y_fit-2*delta,'m--')
-%legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Intervalo de precisão 95%')
 
-legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Regressão Polinômio grau 3','Intervalo de 95% de previsão','Location','northwest','NumColumns',1);
+legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Modelo (polinômio grau 3)','Intervalo de 95% de previsão','Location','northwest','NumColumns',1);
 
 xlabel('Dia Transcorridos')
 ylabel('Recuperados')
