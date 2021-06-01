@@ -3,17 +3,23 @@ close all;
 clear all;
 
 %Data set 29-May-2021
-Y1= dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
-Y2  = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
+Y1 = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
 
 %Data set 31-May-2021
+Y2  = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid2.csv', ',', [0,3,inf,3]);
 
 %Inicializa o vetor
 X1 = [];
 
- %Cria um vetor coluna X com a mesma quantidade de linhas de Y
+ %Cria um vetor coluna X1 com a mesma quantidade de linhas de Y1
  for i=1:length(Y1)
    X1 = [X1; i];
+ end
+
+X2 = [];
+ %Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2
+ for j=1:length(Y2)
+   X2 = [X2; j];
  end
 
 
@@ -23,10 +29,12 @@ figure
 scatter(X1,Y1)
 hold on
 
+scatter(X2,Y2)
+
 %https://www.mathworks.com/help/matlab/ref/polyfit.html
 
 %Specify two outputs to return the coefficients for the 3rd degree polinomial fit as well as the error estimation structure
-[p,S] = polyfit(X1,Y1,3);
+[p,S] = polyfit(X1,Y1,7);
 
 %Evaluate the third-degree polynomial fit in p at the points in X. Specify the error estimation structure as the third input so that polyval calculates an estimate of the standard error. The standard error estimate is returned in delta.
 
