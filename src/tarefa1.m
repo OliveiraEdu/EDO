@@ -1,6 +1,8 @@
 clc;
-close all;
 clear all;
+format short;
+pkg load tablicious;
+
 
 %Data set 29-May-2021
 Y1 = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
@@ -11,26 +13,18 @@ Y2  = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid2.csv', ',', [0,3,inf,
 %Inicializa o vetor X1
 X1 = [];
 
- %Cria um vetor coluna X1 com a mesma quantidade de linhas de Y1
+%Cria um vetor coluna X1 com a mesma quantidade de linhas de Y1
  for i=1:length(Y1)
    X1 = [X1; i];
  end
 
 %Inicializa o vetor X2
 X2 = [];
- %Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2
+
+%Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2
  for j=1:length(Y2)
    X2 = [X2; j];
  end
-
-
-figure
-
-%Plota os dados
-scatter(X1,Y1)
-hold on
-
-plot(X2,Y2,'.')
 
 %https://www.mathworks.com/help/matlab/ref/polyfit.html
 
@@ -41,29 +35,13 @@ plot(X2,Y2,'.')
 
 [y_fit,delta] = polyval(p,X1,S);
 
-%Plot the original data, linear fit, and 95% prediction interval y±2Δ.
-
-%plot(X1,Y1,'bo')
-grid on
-plot(X1,y_fit,'r-')
-plot(X1,y_fit+2*delta,'m--',X1,y_fit-2*delta,'m--')
-
-legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Modelo (polinômio grau 3)','Intervalo de 95% de previsão','Location','northwest','NumColumns',1);
-
-xlabel('Dia Transcorridos')
-ylabel('Recuperados')
-title('Regressão polinomial entre as variáveis')
-
+%To see how good the fit is, evaluate the polynomial at the data points and generate a table showing the data, fit, and error.
+resid = Y1-y_fit;
 
 %Fit Data
-pkg load tablicious
 
-%To see how good the fit is, evaluate the polynomial at the data points and generate a table showing the data, fit, and error.
-format long
-resid = Y1-y_fit;
 tab = table (X1,Y1,y_fit,resid);
 prettyprint (tab)
-
 
 %Square the residuals and total them to obtain the residual sum of squares:
 
@@ -73,6 +51,10 @@ SSresid = sum(resid.^2);
 
 SStotal = (length(Y1)-1) * var(Y1);
 
+%Polinomy
+
+fprintf('y = %fx³+%fx²+%fx+%f\n\n',p)
+
 %Compute R2 using the formula given in the introduction of this topic:
 %For linear regression only
 rsq = 1 - SSresid/SStotal
@@ -80,3 +62,23 @@ rsq = 1 - SSresid/SStotal
 %Computing Adjusted R2 for Polynomial Regressions
 %The adjusted R2, 0.8945, is smaller than simple R2, .9083. It provides a more reliable estimate of the power of your polynomial model to predict.
 rsq_adj = 1 - SSresid/SStotal * (length(Y1)-1)/(length(Y1)-length(p))
+
+%Plot the original data, linear fit, and 95% prediction interval y±2Δ.
+
+%Plota os dados
+scatter(X1,Y1)
+
+hold on
+
+plot(X2,Y2,'.')
+
+plot(X1,y_fit,'r-')
+plot(X1,y_fit+2*delta,'m--',X1,y_fit-2*delta,'m--')
+
+grid on
+
+legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Modelo (polinômio grau 3)','Intervalo de 95% de previsão','Location','northwest','NumColumns',1);
+
+xlabel('Dia Transcorridos')
+ylabel('Recuperados')
+title('Regressão linear polinomial entre as variáveis')
