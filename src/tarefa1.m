@@ -8,7 +8,7 @@ Y1 = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3
 %Data set 31-May-2021
 Y2  = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid2.csv', ',', [0,3,inf,3]);
 
-%Inicializa o vetor
+%Inicializa o vetor X1
 X1 = [];
 
  %Cria um vetor coluna X1 com a mesma quantidade de linhas de Y1
@@ -16,6 +16,7 @@ X1 = [];
    X1 = [X1; i];
  end
 
+%Inicializa o vetor X2
 X2 = [];
  %Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2
  for j=1:length(Y2)
