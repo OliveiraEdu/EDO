@@ -3,6 +3,8 @@ clear all;
 format short;
 pkg load tablicious;
 
+%Data Source
+%https://datastudio.google.com/u/0/reporting/4ff82b8a-a9ff-4577-b239-da2e38d24443/page/vBjQB
 
 %Data set 29-May-2021
 Y1 = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
@@ -77,8 +79,21 @@ plot(X1,y_fit+2*delta,'m--',X1,y_fit-2*delta,'m--')
 
 grid on
 
+
 legend('Recuperados até 29/05/2021','Recuperados até 31/05/2021','Modelo (polinômio grau 3)','Intervalo de 95% de previsão','Location','northwest','NumColumns',1);
 
 xlabel('Dia Transcorridos')
 ylabel('Recuperados')
 title('Regressão linear polinomial entre as variáveis')
+
+%Plot histogram of residuals
+figure
+scatter(X1,resid,'*')
+grid on
+xlabel('Dia Transcorridos')
+ylabel('Resíduo')
+title('Análise de distribuição dos resíduos da regressão linear')
+
+
+
+
