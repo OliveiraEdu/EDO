@@ -86,7 +86,11 @@ xlabel('Dia Transcorridos')
 ylabel('Recuperados')
 title('Regressão linear polinomial entre as variáveis')
 
-%Plot histogram of residuals
+%Plot of residuals
+%Producing a fit using a linear model requires minimizing the sum of the squares of the residuals. 
+%This minimization yields what is called a least-squares fit. 
+%You can gain insight into the “goodness” of a fit by visually examining a plot of the residuals. 
+%If the residual plot has a pattern (that is, residual data points do not appear to have a random scatter), the randomness indicates that the model does not properly fit the data.
 figure
 scatter(X1,resid,'*')
 grid on
