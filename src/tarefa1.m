@@ -12,21 +12,14 @@ Y1 = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3
 %Data set 31-May-2021
 Y2  = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid2.csv', ',', [0,3,inf,3]);
 
-%Inicializa o vetor X1
-X1 = [];
+%Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2 
+%The easiest way to create an equally spaced column vector is to create a row vector and transpose it. 
+X1=transpose(1:length(Y1));
 
-%Cria um vetor coluna X1 com a mesma quantidade de linhas de Y1
- for i=1:length(Y1)
-   X1 = [X1; i];
- end
-
-%Inicializa o vetor X2
-X2 = [];
 
 %Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2
- for j=1:length(Y2)
-   X2 = [X2; j];
- end
+X2=transpose(1:length(Y2));
+
 
 %https://www.mathworks.com/help/matlab/ref/polyfit.html
 
@@ -38,6 +31,7 @@ X2 = [];
 [y_fit,delta] = polyval(p,X1,S);
 
 %To see how good the fit is, evaluate the polynomial at the data points and generate a table showing the data, fit, and error.
+%Also known as Forecast Error
 resid = Y1-y_fit;
 
 %Fit Data
@@ -48,6 +42,19 @@ prettyprint (tab)
 %Square the residuals and total them to obtain the residual sum of squares:
 
 SSresid = sum(resid.^2);
+
+%MAPE
+pre_MAPE = abs((y_fit-Y1)./Y1);
+MAPE = mean(pre_MAPE(isfinite(pre_MAPE)))
+
+
+(Y1 - y_fit);    % Errors
+(Y1 - y_fit).^2;   % Squared Error
+mean((Y1 - y_fit).^2);   % Mean Squared Error
+
+%RMSE - Root Mean Squared Error
+RMSE = sqrt(mean((Y1- y_fit).^2))  
+
 
 %Compute the total sum of squares of y by multiplying the variance of y by the number of observations minus 1:
 
