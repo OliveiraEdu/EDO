@@ -112,27 +112,27 @@ rsq_adj3 = 1 - SSresid3/SStotal3 * (length(Y1)-1)/(length(Y1)-length(p3))
 %Plot the original data, linear fit, and 95% prediction interval y±2Δ.
 
 %Plota os dados da semana base
-scatter(X1,Y1)
+scatter(X1,Y1,'g','linewidth', 1)
 
 hold on
 %Plota os dados da semana posterior
 %plot(X2,Y2,'.')
 
 %Plota a projeção Linear
-plot(X1,y_fit1,'r-')
+plot(X1,y_fit1,'k', 'linewidth', 1)
 
 %Plota a projeção Quadrática
-plot(X1,y_fit2,'r-')
+plot(X1,y_fit2,'b', 'linewidth', 1)
 
 %Plota a projeção cúbica
-plot(X1,y_fit3,'r-')
+plot(X1,y_fit3,'r', 'linewidth', 1)
 
 grid on
 
-legend('Recuperados até 29/05/2021','Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
+legend('Indivíduos Recuperados até 29/05/2021','Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
 
 xlabel('Dia Transcorridos')
-ylabel('Recuperados')
+ylabel('Indivíduos Recuperados')
 title('Regressão linear polinomial entre as variáveis')
 
 
@@ -148,10 +148,10 @@ plot(X1,y_fit1+2*delta1,'m--',X1,y_fit1-2*delta1,'m--')
 
 grid on
 
-legend('Recuperados até 29/05/2021','Linear','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
+legend('Indivíduos Recuperados até 29/05/2021','Linear','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
 
 xlabel('Dia Transcorridos')
-ylabel('Recuperados')
+ylabel('Indivíduos Recuperados')
 title('Regressão linear polinomial entre as variáveis')
 
 
@@ -168,10 +168,10 @@ plot(X1,y_fit2+2*delta2,'m--',X1,y_fit2-2*delta2,'m--')
 
 grid on
 
-legend('Recuperados até 29/05/2021','Quadrática','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
+legend('Indivíduos Recuperados até 29/05/2021','Quadrática','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
 
 xlabel('Dia Transcorridos')
-ylabel('Recuperados')
+ylabel('Indivíduos Recuperados')
 title('Regressão linear polinomial entre as variáveis')
 
 %Cúbica
@@ -187,10 +187,10 @@ plot(X1,y_fit3+2*delta3,'m--',X1,y_fit3-2*delta3,'m--')
 grid on
 
 
-legend('Recuperados até 29/05/2021','Cúbica','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
+legend('Indivíduos Recuperados até 29/05/2021','Cúbica','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
 
 xlabel('Dia Transcorridos')
-ylabel('Recuperados')
+ylabel('Indivíduos Recuperados')
 title('Regressão linear polinomial entre as variáveis')
 
 %Plot of residuals
