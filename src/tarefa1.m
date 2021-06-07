@@ -112,39 +112,39 @@ rsq_adj3 = 1 - SSresid3/SStotal3 * (length(Y1)-1)/(length(Y1)-length(p3))
 %Plot the original data, linear fit, and 95% prediction interval y±2Δ.
 
 %Plota os dados da semana base
-scatter(X1,Y1,'g','linewidth', 1)
+plot(X1,Y1,'ob','linewidth',2)
+
+xlabel('Dia Transcorridos')
+ylabel('Indivíduos Recuperados')
+
 
 hold on
 %Plota os dados da semana posterior
 %plot(X2,Y2,'.')
 
-%Plota a projeção Linear
-plot(X1,y_fit1,'k', 'linewidth', 1)
+%Plota a projeção Linearscatter
+plot(X1,y_fit1,'--g', 'linewidth', 2)
 
 %Plota a projeção Quadrática
-plot(X1,y_fit2,'b', 'linewidth', 1)
+plot(X1,y_fit2,'-m', 'linewidth', 2)
 
 %Plota a projeção cúbica
-plot(X1,y_fit3,'r', 'linewidth', 1)
+plot(X1,y_fit3,'..r', 'linewidth', 2)
 
 grid on
 
 legend('Indivíduos Recuperados até 29/05/2021','Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
-
-xlabel('Dia Transcorridos')
-ylabel('Indivíduos Recuperados')
 title('Regressão linear polinomial entre as variáveis')
-
 
 %Linear
 figure
 %Plota os dados da semana base
-scatter(X1,Y1)
+scatter(X1,Y1,'ob','linewidth',2)
 hold on
 
 %Plota a projeção Linear
-plot(X1,y_fit1,'r-')
-plot(X1,y_fit1+2*delta1,'m--',X1,y_fit1-2*delta1,'m--')
+plot(X1,y_fit1,'r-','linewidth', 2)
+plot(X1,y_fit1+2*delta1,'g--','linewidth', 2,X1,y_fit1-2*delta1,'g--','linewidth', 2)
 
 grid on
 
@@ -158,13 +158,13 @@ title('Regressão linear polinomial entre as variáveis')
 %Quadrática
 figure
 %Plota os dados da semana base
-scatter(X1,Y1)
+scatter(X1,Y1,'ob','linewidth',2)
 hold on
 
 %Plota a projeção Quadrática
-plot(X1,y_fit2,'r-')
+plot(X1,y_fit2,'r-','linewidth', 2)
 
-plot(X1,y_fit2+2*delta2,'m--',X1,y_fit2-2*delta2,'m--')
+plot(X1,y_fit2+2*delta2,'g--','linewidth', 2,X1,y_fit2-2*delta2,'g--','linewidth', 2)
 
 grid on
 
@@ -177,12 +177,12 @@ title('Regressão linear polinomial entre as variáveis')
 %Cúbica
 figure
 %Plota os dados da semana base
-scatter(X1,Y1)
+plot(X1,Y1,'ob','linewidth',2)
 hold on
 
 %Plota a projeção cúbica
-plot(X1,y_fit3,'r-')
-plot(X1,y_fit3+2*delta3,'m--',X1,y_fit3-2*delta3,'m--')
+plot(X1,y_fit3,'r-','linewidth', 2)
+plot(X1,y_fit3+2*delta3,'g--','linewidth', 2,X1,y_fit3-2*delta3,'g--','linewidth', 2)
 
 grid on
 
@@ -191,7 +191,7 @@ legend('Indivíduos Recuperados até 29/05/2021','Cúbica','Intervalo de confian
 
 xlabel('Dia Transcorridos')
 ylabel('Indivíduos Recuperados')
-title('Regressão linear polinomial entre as variáveis')
+%title('Regressão linear polinomial entre as variáveis')
 
 %Plot of residuals
 %Producing a fit using a linear model requires minimizing the sum of the squares of the residuals.
@@ -199,8 +199,12 @@ title('Regressão linear polinomial entre as variáveis')
 %You can gain insight into the “goodness” of a fit by visually examining a plot of the residuals.
 %If the residual plot has a pattern (that is, residual data points do not appear to have a random scatter), the randomness indicates that the model does not properly fit the data.
 figure
-scatter(X1,resid1,'*')
+plot(X1,resid1,'--r','linewidth', 2)
+hold on
+plot(X1,resid2,'+b','linewidth', 2)
+plot(X1,resid3,'.g','linewidth', 2)
 grid on
 xlabel('Dia Transcorridos')
 ylabel('Resíduo')
 title('Análise de distribuição dos resíduos da regressão linear')
+legend('Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
