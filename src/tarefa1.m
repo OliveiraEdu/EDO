@@ -112,11 +112,23 @@ rsq_adj3 = 1 - SSresid3/SStotal3 * (length(Y1)-1)/(length(Y1)-length(p3))
 %Plot the original data, linear fit, and 95% prediction interval y±2Δ.
 
 %Plota os dados da semana base
+figure
 plot(X1,Y1,'ob','linewidth',2)
 
 xlabel('Dia Transcorridos')
 ylabel('Indivíduos Recuperados')
+grid on
 
+legend('Indivíduos Recuperados até 29/05/2021','Location','northwest','NumColumns',1);
+
+
+%Plota os dados da semana base
+figure
+plot(X1,Y1,'ob','linewidth',2)
+
+xlabel('Dia Transcorridos')
+ylabel('Indivíduos Recuperados')
+grid on
 
 hold on
 %Plota os dados da semana posterior
@@ -131,10 +143,10 @@ plot(X1,y_fit2,'-m', 'linewidth', 2)
 %Plota a projeção cúbica
 plot(X1,y_fit3,'..r', 'linewidth', 2)
 
-grid on
+
 
 legend('Indivíduos Recuperados até 29/05/2021','Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
-title('Regressão linear polinomial entre as variáveis')
+%title('Regressão linear polinomial entre as variáveis')
 
 %Linear
 figure
@@ -152,7 +164,7 @@ legend('Indivíduos Recuperados até 29/05/2021','Linear','Intervalo de confian�
 
 xlabel('Dia Transcorridos')
 ylabel('Indivíduos Recuperados')
-title('Regressão linear polinomial entre as variáveis')
+%title('Regressão linear polinomial entre as variáveis')
 
 
 %Quadrática
@@ -172,7 +184,7 @@ legend('Indivíduos Recuperados até 29/05/2021','Quadrática','Intervalo de con
 
 xlabel('Dia Transcorridos')
 ylabel('Indivíduos Recuperados')
-title('Regressão linear polinomial entre as variáveis')
+%title('Regressão linear polinomial entre as variáveis')
 
 %Cúbica
 figure
@@ -206,5 +218,5 @@ plot(X1,resid3,'.g','linewidth', 2)
 grid on
 xlabel('Dia Transcorridos')
 ylabel('Resíduo')
-title('Análise de distribuição dos resíduos da regressão linear')
+%title('Análise de distribuição dos resíduos da regressão linear')
 legend('Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
