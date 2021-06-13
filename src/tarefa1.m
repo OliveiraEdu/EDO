@@ -1,169 +1,222 @@
-%https://www.mathworks.com/help/matlab/data_analysis/linear-regression.html
-
-clear all;
-
 clc;
+clear all;
+format short;
+pkg load tablicious;
+
+%Data Source
+%https://datastudio.google.com/u/0/reporting/4ff82b8a-a9ff-4577-b239-da2e38d24443/page/vBjQB
+
+%Data set 29-May-2021
+Y1 = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
+
+%Data set 31-May-2021
+Y2  = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid2.csv', ',', [0,3,inf,3]);
+
+%Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2
+%The easiest way to create an equally spaced column vector is to create a row vector and transpose it.
+X1=transpose(1:length(Y1));
 
 
-% Carrega o dataset
-%a = csvread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv')
-
-% Lê a segunda coluna (óbitos) e cria um vetor y
-
-%y = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
-
-%Lê a terceira coluna (recuperados) e cria um vetor y
-
-y = dlmread ('~/Documents/repo/matlab/EDO/datasets/covid1.csv', ',', [0,3,inf,3]);
-
-%Cria um vetor v da mesma dimensão de y
-v = [];
-
-for  n = 1:length(y)
-
-    v = [v ; n];
-
-end
-
-scatter(v,y)
-
-%Fixed point format with 16 significant figures.
-format long
+%Cria um vetor coluna X2 com a mesma quantidade de linhas de Y2
+X2=transpose(1:length(Y2));
 
 
-%b1 is the slope or regression coefficient.  x = A\B solves the system of linear equations A*x = B.
-b1 = v\y
+%https://www.mathworks.com/help/matlab/ref/polyfit.html
 
-yCalc1 = b1*v;
-
-hold on
-
-plot(v,yCalc1)
-xlabel('Dia Transcorridos')
-%ylabel('Óbitos')
-ylabel('Recuperados')
-title('Relação de regressão linear entre as variáveis')
-
-grid on
-
-%Improve the fit by including a y-intercept β0 in your model as y=β0+β1x. Calculate β0 by padding x with a column of ones and using the \ operator.
-X = [ones(length(v),1) v];
-b = X\y
-
-%Visualize the relation by plotting it on the same figure.
-
-yCalc2 = X*b;
-
-plot(v,yCalc2,'--')
-
-%Find the better fit of the two fits by comparing values of R2. As the R2 values show, the second fit that includes a y-intercept is better.
-
-Rsq1 = 1 - sum((y - yCalc1).^2)/sum((y - mean(y)).^2)
-
-Rsq2 = 1 - sum((y - yCalc2).^2)/sum((y - mean(y)).^2)
+%Specify two outputs to return the coefficients for the 3rd degree polinomial fit as well as the error estimation structure
+[p1,S1] = polyfit(X1,Y1,1);
+[p2,S2] = polyfit(X1,Y1,2);
+[p3,S3] = polyfit(X1,Y1,3);
 
 
-%Use polyfit to compute a linear regression that predicts y from x
-%p(1) is the slope and p(2) is the intercept of the linear predictor.
+%Evaluate the third-degree polynomial fit in p at the points in X. Specify the error estimation structure as the third input so that polyval calculates an estimate of the standard error. The standard error estimate is returned in delta.
 
-p = polyfit(v,y,1)
+[y_fit1,delta1] = polyval(p1,X1,S1);
+[y_fit2,delta2] = polyval(p2,X1,S2);
+[y_fit3,delta3] = polyval(p3,X1,S3);
 
-%Call polyval to use p to predict y, calling the result yfit:
+%To see how good the fit is, evaluate the polynomial at the data points and generate a table showing the data, fit, and error.
+%Also known as Forecast Error
+resid1 = Y1-y_fit1;
+resid2 = Y1-y_fit2;
+resid3 = Y1-y_fit3;
 
+%Fit Data
 
-yfit = polyval(p,v);
-
-
-%Compute the residual values as a vector of signed numbers:
-
-yresid = y - yfit;
-
+%tab = table (X1,Y1,y_fit,resid);
+%prettyprint (tab)
 
 %Square the residuals and total them to obtain the residual sum of squares:
+SSresid1 = sum(resid1.^2);
+SSresid2 = sum(resid2.^2);
+SSresid3 = sum(resid3.^2);
+
+%MAPE
+pre_MAPE1 = abs((y_fit1-Y1)./Y1);
+MAPE1 = mean(pre_MAPE1(isfinite(pre_MAPE1)))
+
+pre_MAPE2 = abs((y_fit2-Y1)./Y1);
+MAPE2 = mean(pre_MAPE2(isfinite(pre_MAPE2)))
+
+pre_MAPE3 = abs((y_fit3-Y1)./Y1);
+MAPE3 = mean(pre_MAPE3(isfinite(pre_MAPE3)))
 
 
-SSresid = sum(yresid.^2);
+% Errors
+%error=(Y1 - y_fit1);
 
+% Squared Error
+%sqr-error=(Y1 - y_fit1).^2;
+
+% Mean Squared Error
+MSE1 = mean((Y1 - y_fit1).^2);
+MSE2 = mean((Y1 - y_fit2).^2);
+MSE3 = mean((Y1 - y_fit3).^2);
+
+%RMSE - Root Mean Squared Error
+RMSE1 = sqrt(mean((Y1- y_fit1).^2))
+RMSE2 = sqrt(mean((Y1- y_fit2).^2))
+RMSE3 = sqrt(mean((Y1- y_fit3).^2))
 
 %Compute the total sum of squares of y by multiplying the variance of y by the number of observations minus 1:
 
+SStotal1 = (length(Y1)-1) * var(Y1);
+SStotal2 = (length(Y1)-1) * var(Y1);
+SStotal3 = (length(Y1)-1) * var(Y1);
 
-SStotal = (length(y)-1) * var(y);
+
+%Describes the polinomy
+
+fprintf('Linear y = %fx+%f\n\n',p1)
+fprintf('Quadrática y = %fx²+%fx+%f\n\n',p2)
+fprintf('Cúbica y = %fx³+%fx²+%fx+%f\n\n',p3)
 
 
 %Compute R2 using the formula given in the introduction of this topic:
-
-rsq = 1 - SSresid/SStotal
-
-%This demonstrates that the linear equation p(1) * v -p2 predicts rsq of the variance in the variable y.
-
-%project values for y
-
-proj_y = p(1)*v+p(2)
-
-%yfit =  p(1) * x + p(2);
-
-
-plot(v, proj_y, '-.')
-
+%For linear regression only
+rsq1 = 1 - SSresid1/SStotal1
+rsq2 = 1 - SSresid2/SStotal2
+rsq3 = 1 - SSresid3/SStotal3
 
 
 %Computing Adjusted R2 for Polynomial Regressions
+%Usually the adjusted R2 is smaller than simple R2. It provides a more reliable estimate of the power of your polynomial model to predict.
+rsq_adj1 = 1 - SSresid1/SStotal1 * (length(Y1)-1)/(length(Y1)-length(p1))
+rsq_adj2 = 1 - SSresid2/SStotal2 * (length(Y1)-1)/(length(Y1)-length(p2))
+rsq_adj3 = 1 - SSresid3/SStotal3 * (length(Y1)-1)/(length(Y1)-length(p3))
 
 
-%Call polyfit to generate a cubic fit to predict y from x:
+%tab = table (X1,Y1,y_fit1,resid1);
+%prettyprint (tab,['RMSE'; 'MAPE'; 'R²','R*²'],[' ';'linear';'quadrática'; 'cúbica'])
+
+%Plot the original data, linear fit, and 95% prediction interval y±2Δ.
+
+%Plota os dados da semana base
+figure
+plot(X1,Y1,'ob','linewidth',2)
+
+xlabel('Dia Transcorridos')
+ylabel('Indivíduos Recuperados')
+grid on
+
+legend('Indivíduos Recuperados até 29/05/2021','Location','northwest','NumColumns',1);
 
 
-p = polyfit(v,y,3)
+%Plota os dados da semana base
+figure
+plot(X1,Y1,'ob','linewidth',2)
 
+xlabel('Dia Transcorridos')
+ylabel('Indivíduos Recuperados')
+grid on
 
-%p(4) is the intercept of the cubic predictor.
+hold on
+%Plota os dados da semana posterior
+%plot(X2,Y2,'.')
 
+%Plota a projeção Linearscatter
+plot(X1,y_fit1,'--g', 'linewidth', 2)
 
-%Call polyval to use the coefficients in p to predict y, naming the result yfit:
+%Plota a projeção Quadrática
+plot(X1,y_fit2,'-m', 'linewidth', 2)
 
-
-yfit = polyval(p,v);
-
-
-%polyval evaluates the explicit equation you could manually enter as:
-
-%yfit =  p(1) * x.^3 + p(2) * x.^2 + p(3) * x + p(4);
-
-%Compute the residual values as a vector of signed numbers:
-
-
-yresid = y - yfit;
-
-%Square the residuals and total them to obtain the residual sum of squares:
-
-
-SSresid = sum(yresid.^2);
-
-
-%Compute the total sum of squares of y by multiplying the variance of y by the number of observations minus 1:
-
-
-SStotal = (length(y)-1) * var(y);
-
-
-%Compute simple R2 for the cubic fit using the formula given in the introduction of this topic:
-
-
-rsq = 1 - SSresid/SStotal
-
-%Finally, compute adjusted R2 to account for degrees of freedom:
-
-rsq_adj = 1 - SSresid/SStotal * (length(y)-1)/(length(y)-length(p))
-
-
-%The adjusted R2, is smaller than simple R2. It provides a more reliable estimate of the power of your polynomial model to predict
-
-%yfit =  p(1) * v.^3 + p(2) * v.^2 + p(3) * v + p(4);
+%Plota a projeção cúbica
+plot(X1,y_fit3,'..r', 'linewidth', 2)
 
 
 
-plot(v, yfit)
+legend('Indivíduos Recuperados até 29/05/2021','Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
+%title('Regressão linear polinomial entre as variáveis')
+
+%Linear
+figure
+%Plota os dados da semana base
+scatter(X1,Y1,'ob','linewidth',2)
+hold on
+
+%Plota a projeção Linear
+plot(X1,y_fit1,'r-','linewidth', 2)
+plot(X1,y_fit1+2*delta1,'g--','linewidth', 2,X1,y_fit1-2*delta1,'g--','linewidth', 2)
+
+grid on
+
+legend('Indivíduos Recuperados até 29/05/2021','Linear','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
+
+xlabel('Dia Transcorridos')
+ylabel('Indivíduos Recuperados')
+%title('Regressão linear polinomial entre as variáveis')
 
 
-legend('Dados','Regressão 1','Regressão 2','Linear','Cúbico','Location','northwest','NumColumns',1);
+%Quadrática
+figure
+%Plota os dados da semana base
+scatter(X1,Y1,'ob','linewidth',2)
+hold on
+
+%Plota a projeção Quadrática
+plot(X1,y_fit2,'r-','linewidth', 2)
+
+plot(X1,y_fit2+2*delta2,'g--','linewidth', 2,X1,y_fit2-2*delta2,'g--','linewidth', 2)
+
+grid on
+
+legend('Indivíduos Recuperados até 29/05/2021','Quadrática','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
+
+xlabel('Dia Transcorridos')
+ylabel('Indivíduos Recuperados')
+%title('Regressão linear polinomial entre as variáveis')
+
+%Cúbica
+figure
+%Plota os dados da semana base
+plot(X1,Y1,'ob','linewidth',2)
+hold on
+
+%Plota a projeção cúbica
+plot(X1,y_fit3,'r-','linewidth', 2)
+plot(X1,y_fit3+2*delta3,'g--','linewidth', 2,X1,y_fit3-2*delta3,'g--','linewidth', 2)
+
+grid on
+
+
+legend('Indivíduos Recuperados até 29/05/2021','Cúbica','Intervalo de confiança de 95%','Location','northwest','NumColumns',1);
+
+xlabel('Dia Transcorridos')
+ylabel('Indivíduos Recuperados')
+%title('Regressão linear polinomial entre as variáveis')
+
+%Plot of residuals
+%Producing a fit using a linear model requires minimizing the sum of the squares of the residuals.
+%This minimization yields what is called a least-squares fit.
+%You can gain insight into the “goodness” of a fit by visually examining a plot of the residuals.
+%If the residual plot has a pattern (that is, residual data points do not appear to have a random scatter), the randomness indicates that the model does not properly fit the data.
+figure
+plot(X1,resid1,'--r','linewidth', 2)
+hold on
+plot(X1,resid2,'+b','linewidth', 2)
+plot(X1,resid3,'.g','linewidth', 2)
+grid on
+xlabel('Dia Transcorridos')
+ylabel('Resíduo')
+%title('Análise de distribuição dos resíduos da regressão linear')
+legend('Linear','Quadrática','Cúbica','Location','northwest','NumColumns',1);
