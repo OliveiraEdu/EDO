@@ -1,0 +1,1 @@
+clc;clear all;format short;% Meia vida do elemento em anostau = 5730% Percentual restante do quantidade original no tempo medidorest = 0.92% Datação, tempo em anost1 = -tau * log2(rest)t2 = -(tau/log10(2))*log10 (rest)
