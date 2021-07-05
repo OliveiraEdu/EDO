@@ -22,7 +22,8 @@ t2 = -(tau/log(2))*log(rest)
 
 %Conjunto para o intervalo de 100% até 70% de quantidade de C14
 
-remain=[1:-0.0001:.7];
+%remain=[1:-0.0001:.7];
+remain=[1:-0.0001:0];
 
 
 %Anos
